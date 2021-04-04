@@ -2,14 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from './reducers'
 import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+
+//to combine DevTools with middleware(Thunk) using applyMiddlware and compose
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 //REDUX setup
 const store = createStore(
   rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+  composeEnhancer(applyMiddleware(thunk))
+)
 
 ReactDOM.render(
   <React.StrictMode>

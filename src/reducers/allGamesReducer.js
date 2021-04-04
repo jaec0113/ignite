@@ -8,9 +8,16 @@ const initialState = {
 const allGamesReducer = (state=initialState, action) => {
     switch(action.type) {
         case 'FETCH_GAMES':
-            return {...state}
+            return { ...state }
         default:
-            return {...state}
+            return { ...state }
+    }
+}
+
+//ACTION CREATOR
+const fetchGames = (userData) => {
+    return {
+        type: "FETCH_GAMES",
     }
 }
 

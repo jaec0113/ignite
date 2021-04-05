@@ -16,8 +16,14 @@ export default function Home() {
     useEffect(() => {
       dispatch(loadGames())
     }, [dispatch])
+    
     //Extract data from state
     const { popular, newGames, upcoming} = useSelector((state) => state.games)
+
+    if(!pathId) {
+        document.body.style.overflow = "auto"
+    }
+
     return (
         <Gamelist>
             {pathId && <GameDetail />}

@@ -2,42 +2,59 @@ import React from 'react'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 export default function GameDetail() {
 
-    const {short_screenshots, game} = useSelector((state) => state.detail)
+    const history = useHistory()
+    const exitDetailHandler = (e) => {
+        const element = e.target
+        if (element.classList.contains("shadow")){
+            document.body.style.overflow = "auto"
+            history.push("/")
+        }
+    }
+
+    const {short_screenshots, game, isLoading} = useSelector((state) => state.detail)
 
     return (
-        <CardShadow>
-            <Detail>
-                <Stats>
-                    <div className="rating">
-                        <h3>{game.name}</h3>
-                        <p>Rating: {game.rating}</p>
+        <>
+        {!isLoading && (
+            <CardShadow 
+                className="shadow" 
+                onClick={exitDetailHandler}
+            >
+                <Detail>
+                    <Stats>
+                        <div className="rating">
+                            <h3>{game.name}</h3>
+                            <p>Rating: {game.rating}</p>
+                        </div>
+                        <Info>
+                            <h3>Platforms</h3>
+                            <Platforms>
+                                {game.platforms && game.platforms.map(data => (
+                                    <h3 key={data.platform.id}>{data.platform.name}
+                                    </h3>
+                                ))}
+                            </Platforms>
+                        </Info>
+                    </Stats>
+                    <Media>
+                        <img src={game.background_image} alt="game background"/>
+                    </Media>
+                    <Description>
+                        <p>{game.description_raw}</p>
+                    </Description>
+                    <div className="gallery">
+                        {short_screenshots.results && short_screenshots.results.map(short_screenshots => (
+                            <img src={short_screenshots.image} alt="screen shot"/>
+                        ))}
                     </div>
-                    <Info>
-                        <h3>Platforms</h3>
-                        <Platforms>
-                            {game.platforms && game.platforms.map(data => (
-                                <h3 key={data.platform.id}>{data.platform.name}
-                                </h3>
-                            ))}
-                        </Platforms>
-                    </Info>
-                </Stats>
-                <Media>
-                    <img src={game.background_image} alt="game background"/>
-                </Media>
-                <Description>
-                    <p>{game.description_raw}</p>
-                </Description>
-                <div className="gallery">
-                    {short_screenshots.results && short_screenshots.results.map(short_screenshots => (
-                        <img src={short_screenshots.image} alt="screen shot"/>
-                    ))}
-                </div>
-            </Detail>
-        </CardShadow>
+                </Detail>
+            </CardShadow>
+        )}
+        </>
     )
 }
 
